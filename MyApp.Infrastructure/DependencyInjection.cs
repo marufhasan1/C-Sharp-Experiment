@@ -9,8 +9,8 @@ namespace CleanArchitecture.Infrastructure
         public static IServiceCollection AddInfrastructureDI(this IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options => {
-                //options.UseMySql("server=localhost;database=myapp_db;user=root;password=");
-                options.UseMySql("server=localhost;database=myapp_db;user=root;password=", new MySqlServerVersion(new Version(8, 0, 30)));
+                //options.UseMySql("server=localhost;database=myapp_db;user=root;password=", new MySqlServerVersion(new Version(8, 0, 30)));
+                options.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=test_api_db;Trusted_Connection=True;TrustServerCertificate=True;");
             });
             return services;
         }
