@@ -2,17 +2,18 @@
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructureDI(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureDI(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(options => {
-                //options.UseMySql("server=localhost;database=myapp_db;user=root;password=", new MySqlServerVersion(new Version(8, 0, 30)));
-                options.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=test_api_db;Trusted_Connection=True;TrustServerCertificate=True;");
+                //options.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=test_api_db;Trusted_Connection=True;TrustServerCertificate=True;");
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
