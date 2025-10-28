@@ -1,15 +1,17 @@
 ﻿using CleanArchitecture.Application.Commands;
 using CleanArchitecture.Application.Queries;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Options;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace CleanArchitecture.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeesController(ISender sender) : ControllerBase
+    public class EmployeesController(ISender sender,IOptions<ConnectionStringOptions> options) : ControllerBase
     {
         [HttpPost("")]
         public async Task<IActionResult> AddEmployeeAsync([FromBody] EmployeeEntity employee)
@@ -23,6 +25,12 @@ namespace CleanArchitecture.Api.Controllers
         {
             var result = await sender.Send(new GetAllEmployeesQuery());
             return Ok(result);
+        }
+
+        [HttpGet("test")]
+        public async Task<IActionResult> GetOptionValue()
+        {
+            return Ok(options.Value.DefaultConnection);
         }
 
         [HttpGet("{employeeId}")]
